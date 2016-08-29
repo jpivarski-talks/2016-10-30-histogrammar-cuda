@@ -31,7 +31,7 @@
 
 \lstset{ %
   backgroundcolor=\color{white},      % choose the background color
-  basicstyle=\ttfamily\small,         % size of fonts used for the code
+  basicstyle=\ttfamily\scriptsize,         % size of fonts used for the code
   breaklines=true,                    % automatic line breaking only at whitespace
   captionpos=b,                       % sets the caption-position to bottom
   commentstyle=\color{commentgreen},  % comment style
@@ -79,8 +79,157 @@
 %  \tableofcontents
 %\end{frame}
 
-\begin{frame}{Introduction}
+\begin{frame}{Motivated by a different problem}
 
+I've been helping Oliver Gutsche, Matteo Cremonesi, Cristina Su\'arez port their dark matter search from C++ to Apache Spark.
+
+\begin{center}
+\includegraphics[width=0.8\linewidth]{spark.png}
+\end{center}
 \end{frame}
+
+\begin{frame}[fragile]{Motivated by a different problem}
+\begin{description}
+\item[Problem:] Spark has a functional interface; ROOT's imperative TH1 classes are awkward in that paradigm.
+\end{description}
+
+\begin{columns}
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x = ROOT.TH1F("x", "", 100, 0.0, 20.0)
+
+for event in events:
+    px.fill(event.met.px)
+
+x.Draw()
+\end{lstlisting}
+
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x = events.aggregate(
+    ROOT.TH1F("x", "", 100, -5.0, 5.0),
+    lambda h, event:
+      h[0].fill(event.met.px),
+    lambda h1, h2:
+      h1[0].Add(h2[0]))
+
+x.Draw()
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Motivated by a different problem}
+\begin{description}
+\item[Problem:] Spark has a functional interface; ROOT's imperative TH1 classes are awkward in that paradigm.
+\end{description}
+
+\begin{columns}
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x = ROOT.TH1F("x", "", 100, 0.0, 20.0)
+y = ROOT.TH1F("y", "", 100, 0.0, 20.0)
+
+for event in events:
+    px.fill(event.met.px)
+    py.fill(event.met.py)
+
+x.Draw()
+y.Draw()
+\end{lstlisting}
+
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x, y, z = events.aggregate(
+    (ROOT.TH1F("x", "", 100, -5.0, 5.0),
+     ROOT.TH1F("y", "", 100, -5.0, 5.0)),
+    lambda h, event: (
+      h[0].fill(event.met.px),
+      h[1].fill(event.met.py)),
+    lambda h1, h2: (
+      h1[0].Add(h2[0]),
+      h1[1].Add(h2[1])))
+
+x.Draw()
+y.Draw()
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Motivated by a different problem}
+\begin{description}
+\item[Problem:] Spark has a functional interface; ROOT's imperative TH1 classes are awkward in that paradigm.
+\end{description}
+
+\begin{columns}
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x = ROOT.TH1F("x", "", 100, 0.0, 20.0)
+y = ROOT.TH1F("y", "", 100, 0.0, 20.0)
+z = ROOT.TH1F("z", "", 100, 0.0, 20.0)
+
+for event in events:
+    px.fill(event.met.px)
+    py.fill(event.met.py)
+    pz.fill(event.met.pz)
+
+x.Draw()
+y.Draw()
+z.Draw()
+\end{lstlisting}
+
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x, y, z = events.aggregate(
+    (ROOT.TH1F("x", "", 100, -5.0, 5.0),
+     ROOT.TH1F("y", "", 100, -5.0, 5.0),
+     ROOT.TH1F("z", "", 100, -5.0, 5.0)),
+    lambda h, event: (
+      h[0].fill(event.met.px),
+      h[1].fill(event.met.py),
+      h[2].fill(event.met.py)),
+    lambda h1, h2: (
+      h1[0].Add(h2[0]),
+      h1[1].Add(h2[1]),
+      h1[2].Add(h2[2])))
+
+x.Draw()
+y.Draw()
+z.Draw()
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Motivated by a different problem}
+\begin{columns}
+\column{0.5\linewidth}
+The problem is that 
+
+
+\column{0.5\linewidth}
+\begin{lstlisting}{language=python}
+x, y, z = events.aggregate(
+    # book
+    (ROOT.TH1F("x", "", 100, -5.0, 5.0),
+     ROOT.TH1F("y", "", 100, -5.0, 5.0),
+     ROOT.TH1F("z", "", 100, -5.0, 5.0)),
+    # increment
+    lambda h, event: (
+      h[0].fill(event.met.px),
+      h[1].fill(event.met.py),
+      h[2].fill(event.met.py)),
+    # combine
+    lambda h1, h2: (
+      h1[0].Add(h2[0]),
+      h1[1].Add(h2[1]),
+      h1[2].Add(h2[2])))
+
+x.Draw()
+y.Draw()
+z.Draw()
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+
 
 \end{document}
