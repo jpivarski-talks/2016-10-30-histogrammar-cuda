@@ -88,6 +88,58 @@ I've been helping Oliver Gutsche, Matteo Cremonesi, Cristina Su\'arez port their
 \end{center}
 \end{frame}
 
+\begin{frame}{Motivated by a different problem}
+
+\begin{block}{Histogramming in Spark}
+\end{block}
+
+\includegraphics[width=\linewidth]{parallelization.pdf}
+
+\vspace{-1 cm}
+\[ \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{head node}} \hspace{0.25 cm} \underbrace{\mbox{\hspace{6.5 cm}}}_{\mbox{executor nodes}} \hspace{0.5 cm} \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{head node}} \]
+
+\end{frame}
+
+\begin{frame}{Motivated by a different problem}
+
+\begin{block}{Histogramming on the GPU}
+\end{block}
+
+\includegraphics[width=\linewidth]{parallelization.pdf}
+
+\vspace{-1 cm}
+\[ \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{host}} \hspace{0.25 cm} \underbrace{\mbox{\hspace{6.5 cm}}}_{\mbox{device}} \hspace{0.5 cm} \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{host}} \]
+
+\end{frame}
+
+\begin{frame}{Motivated by a different problem}
+
+\begin{block}{Histogramming in ROOT's PROOF system}
+\end{block}
+
+\includegraphics[width=\linewidth]{parallelization.pdf}
+
+\vspace{-1 cm}
+\[ \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{client}} \hspace{0.25 cm} \underbrace{\mbox{\hspace{6.5 cm}}}_{\mbox{workers}} \hspace{0.5 cm} \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{client}} \]
+
+\end{frame}
+
+\begin{frame}{Motivated by a different problem}
+
+\begin{block}{Histogramming in Julia}
+\end{block}
+
+\includegraphics[width=\linewidth]{parallelization.pdf}
+
+\vspace{-1 cm}
+\[ \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{interactive}} \hspace{0.25 cm} \underbrace{\mbox{\hspace{6.5 cm}}}_{\mbox{spawned processes}} \hspace{0.5 cm} \underbrace{\mbox{\hspace{1.5 cm}}}_{\mbox{interactive}} \]
+
+\end{frame}
+
+%%  HERE  %%
+
+
+
 \begin{frame}[fragile]{Motivated by a different problem}
 \begin{description}
 \item[Problem:] Spark has a functional interface; ROOT's imperative TH1 classes are awkward in that paradigm.
